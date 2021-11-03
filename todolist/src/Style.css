@@ -102,3 +102,7 @@ button{
   width: 20px;
 
 }
+
+.line-through{
+  text-decoration: line-through;
+}
