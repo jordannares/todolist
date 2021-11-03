@@ -56,10 +56,12 @@ code {
 /* Todo List */
 
 .todo-app-container{
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   top:50%;
   transform:translateY(50%);
+  width: 600px;
+  margin:0 auto;
 
   /* position:absolute;
   top:50%;
@@ -68,7 +70,7 @@ code {
 }
 
 .todo-app{
-  width: 600px;
+  /* width: 600px; */
   background-color: #61dafb;
 }
 
@@ -105,4 +107,29 @@ button{
 
 .line-through{
   text-decoration: line-through;
+}
+
+.check-all-container, .other-buttons-container{
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:5px 0;
+}
+
+
+.button{
+  border:1px solid #fff;
+  border-radius: 3px;
+  padding:3px 10px;
+  cursor: pointer;
+}
+
+.filter-button{
+  margin-right:5px;
+}
+
+.filter-button-active{
+  background:yellow;
 }
