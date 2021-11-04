@@ -78,6 +78,7 @@ code {
   width: 600px;
   background-color: #61dafb;
   padding:20px;
+  border-radius: 10px;
 }
 
 .todo-item-list{
@@ -145,6 +146,10 @@ button{
 .todo-input{
   width: 100%;
   padding:10px;
+}
+
+.toggles-container{
+  display: flex;
 }
 
 /*** Margin **/
