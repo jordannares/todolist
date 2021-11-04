@@ -13,7 +13,7 @@ TodoList.PropsTypes = {
     updateTodo: PropsTypes.func.isRequired,
     escapeEditing: PropsTypes.func.isRequired,
     deleteTodo: PropsTypes.func.isRequired,
-    remaining: PropsTypes.func.isRequired,
+    remaining: PropsTypes.number.isRequired,
     clearCompleted: PropsTypes.func.isRequired,
     completeAllTodos: PropsTypes.func.isRequired,
     todosFiltered: PropsTypes.func.isRequired,

@@ -1,5 +1,4 @@
-// import logo from './logo.svg';
-import { useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 // import Another from './components/Another';
 import './Style.css';
 import NoTodos from './components/NoTodos';
@@ -8,6 +7,8 @@ import TodoList from './components/TodoList';
 
 
 function App() {
+  const [name, setName] = useState('');
+  const nameInputEl = useRef(null);
   const [todos, setTodos] = useState([
     {
       id: 1,
@@ -118,9 +119,13 @@ function App() {
      setTodos(updatedTodos);
   }
 
-  function remaining() {
+  function remainingCalculation() {
+    // console.log('remaining');
+    // for(let index = 0; index < 2000000000; index++){}
     return todos.filter(todo => !todo.isComplete).length;
   }
+
+  const remaining = useMemo(remainingCalculation, [todos]);
 
   function clearCompleted() {
     setTodos([...todos].filter(todo => !todo.isComplete));
@@ -149,9 +154,35 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    // console.log('use effect running');
+    nameInputEl.current.focus();
+
+    return function cleanup(){
+      // console.log('cleaning up');
+    }
+  }, []);
+
   return (
     <div className="todo-app-container">
       <div className="todo-app">
+
+        <div className="name-container">
+          <h2> What is your name? </h2>
+          {/* <button className="mb-5" onClick={() => }>Get Ref</button> */}
+          <form action="#" >
+            <input 
+              type="text" 
+              ref={nameInputEl}
+              className="todo-input" 
+              placeholder="What is your name"
+              value={name}
+              onChange={event => setName(event.target.value)}
+            />
+          </form>
+          {name && <p className="name-label">Hello {name}</p>}
+        </div>
+
         <h2>Todo App</h2>
 
         <TodoForm addTodo={addTodo}/>
@@ -176,8 +207,6 @@ function App() {
           <NoTodos/>
 
         )}
-
-
 
       </div>
     </div>
