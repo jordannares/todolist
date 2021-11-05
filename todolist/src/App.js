@@ -90,7 +90,7 @@ const [idForTodo, setIdForTodo] = useLocalStorage('idForTodo', 1);
         setFilter
       }}>
 
-      <div className="todo-app-container">
+     
         <div className="todo-app">
 
           <div className="name-container">
@@ -138,7 +138,7 @@ const [idForTodo, setIdForTodo] = useLocalStorage('idForTodo', 1);
           </SwitchTransition>
           
         </div>
-      </div>
+
     </TodosContext.Provider>
   );
 }
