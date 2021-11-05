@@ -1,48 +1,111 @@
-import React, { useState } from 'react'
-import PropsTypes from 'prop-types'
+import React, { useContext } from 'react'
 import deleteIcon from '../assets/svg/delete-icon.svg';
 import TodoItemsRemaining from './TodoItemsRemaining';
 import ClearTodoCompleted from './ClearTodoCompleted';
 import TodoCompleteAll from './TodoCompleteAll';
 import TodoFilters from './TodoFilters';
 import useToggle from '../hooks/useToggle';
+import { TodosContext } from '../context/todosContext';
 
-TodoList.PropsTypes = {
-    todos: PropsTypes.func.isRequired,
-    completeTodo: PropsTypes.func.isRequired,
-    markAsEditing: PropsTypes.func.isRequired,
-    updateTodo: PropsTypes.func.isRequired,
-    escapeEditing: PropsTypes.func.isRequired,
-    deleteTodo: PropsTypes.func.isRequired,
-    remaining: PropsTypes.number.isRequired,
-    clearCompleted: PropsTypes.func.isRequired,
-    completeAllTodos: PropsTypes.func.isRequired,
-    todosFiltered: PropsTypes.func.isRequired,
-}
 
-export default function TodoList(props) {
+
+export default function TodoList() {
 
     // const [oneVisible, setOneVisible] = useState(true);
+    const {todosFiltered, todos, setTodos} = useContext(TodosContext);
 
     const [isFeaturesOneVisible, setIsFeaturesOneVisible] = useToggle();
-    const [isFeaturesTwoVisible, setIsFeaturesTwoVisible] = useToggle(false);
-    const [filter, setFilter] = useState('all');
+    const [isFeaturesTwoVisible, setIsFeaturesTwoVisible] = useToggle();
+    
+    // const [filter, setFilter] = useState('all');
+
+
+      // Delete Todo
+  function deleteTodo(id) {
+    // console.log("deleteing todo id" + id );
+    setTodos([...todos].filter(todo => todo.id !== id) );
+  }
+
+  // Complete Todo
+  function completeTodo(id) {
+
+    const updatedTodos = todos.map(todo => {
+
+    if(todo.id === id){
+      todo.isComplete = !todo.isComplete;
+    }
+
+    return todo;
+
+    });
+    setTodos(updatedTodos);
+  }
+
+  //Mark as Editing
+  function markAsEditing(id) {
+    const updatedTodos = todos.map(todo => {
+
+      if(todo.id === id){
+        todo.isEditing = true;
+      }
+
+      return todo;
+
+    });
+    setTodos(updatedTodos);
+  }
+
+  // Update Todo
+  function updateTodo(event, id) {
+    const updateTodos = todos.map(todo => {
+
+      if(todo.id === id){
+
+          if(event.target.value.trim().length === 0){
+            todo.isEditing = false;
+            return todo;
+          }
+
+        todo.title = event.target.value;
+        todo.isEditing = false;
+      }
+
+      return todo;
+
+    });
+    setTodos(updateTodos);
+
+  }
+
+  // Escape Editing
+  function escapeEditing(event, id) {
+    const updatedTodos = todos.map(todo => {
+
+      if(todo.id === id){
+        todo.isEditing = false;
+      }
+
+      return todo;
+
+    });
+    setTodos(updatedTodos);
+  }
 
     return (
         <>
         <ul className="todo-item-list">
 
-              { props.todosFiltered(filter).map(( todo, index ) => (
+              { todosFiltered().map(( todo, index ) => (
 
               <li key={todo.id} className="todo-item-container">
                 <div className="todo-item">
-                  <input type="checkbox" onChange={() => props.completeTodo(todo.id)} checked={todo.isComplete ? true : false} />
+                  <input type="checkbox" onChange={() => completeTodo(todo.id)} checked={todo.isComplete ? true : false} />
 
 
                   {!todo.isEditing ? (
 
                   <span 
-                    onDoubleClick={() => props.markAsEditing(todo.id)}
+                    onDoubleClick={() => markAsEditing(todo.id)}
                     className={ `todo-item-label 
                     ${todo.isComplete ? 'line-through' : ''}
                     `}> 
@@ -53,12 +116,12 @@ export default function TodoList(props) {
 
                   <input 
                     type="text"
-                    onBlur={(event) => props.updateTodo(event, todo.id)}
+                    onBlur={(event) => updateTodo(event, todo.id)}
                     onKeyDown={event => {
                       if(event.key === 'Enter'){
-                        props.updateTodo(event, todo.id);
+                        updateTodo(event, todo.id);
                       }else if(event.key === 'Escape'){
-                        props.escapeEditing(event, todo.id);
+                        escapeEditing(event, todo.id);
                       }
                     }}
                     className="todo-item-input"
@@ -71,7 +134,7 @@ export default function TodoList(props) {
 
                 </div>
                 <button
-                onClick={() => props.deleteTodo(todo.id)}
+                onClick={() => deleteTodo(todo.id)}
                 >
                  
                   <img className="delete-icon" src={deleteIcon} alt="img"/>
@@ -99,8 +162,8 @@ export default function TodoList(props) {
         {isFeaturesOneVisible && (
 
           <div className="check-all-container">
-              <TodoCompleteAll completeAllTodos={props.completeAllTodos}/>
-              <TodoItemsRemaining remaining={props.remaining}/>
+              <TodoCompleteAll />
+              <TodoItemsRemaining />
           </div>
 
         )}
@@ -108,14 +171,10 @@ export default function TodoList(props) {
         {isFeaturesTwoVisible && (
 
           <div className="other-buttons-container">
-              <TodoFilters 
-                  todosFiltered={props.todosFiltered}
-                  filter={filter}
-                  setFilter={setFilter}
-              />
+              <TodoFilters />
               <div>
                   {/* <button className="button">Clear Completed</button> */}
-                  <ClearTodoCompleted clearCompleted={props.clearCompleted} />
+                  <ClearTodoCompleted />
               </div>
           </div>
 
