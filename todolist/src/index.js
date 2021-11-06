@@ -6,9 +6,20 @@ import reportWebVitals from './reportWebVitals';
 import Root from './components/Root';
 // import AppClass from './components/AppClass';
 
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+
+// Create a client
+const queryClient = new QueryClient();
+
 ReactDOM.render(
   <React.StrictMode>
-    <Root />
+
+    <QueryClientProvider client={queryClient}>
+      <Root />
+      <ReactQueryDevtools />
+    </QueryClientProvider>
+
     {/* <AppClass /> */}
   </React.StrictMode>,
   document.getElementById('root')

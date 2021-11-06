@@ -1,17 +1,25 @@
 import React from 'react'
-import useFetch from '../hooks/useFetch'
+import { useQuery } from 'react-query'
 
 export default function CustomFetch() {
 
-    const { data: posts, isLoading, messageError } = useFetch('https://www.reddit.com/r/aww/.json');
+    // const { data: posts, isLoading, messageError } = useFetch('https://www.reddit.com/r/aww/.json');
+
+     const { data: posts, isLoading, isError, error, isSuccess  } = useQuery('posts', fetchPosts, {
+         retry:false
+    });
+
+     function fetchPosts() {
+         return fetch('https://www.reddit.com/r/aww/.json').then(response => response.json());
+     }
 
     return (
-
-        // <div>dsadasdsd</div>
         
         <div className="container">
+
             {isLoading && <div>Loading...</div>}
-            {posts && (
+
+            {isSuccess && (
                 <ul>
                     {posts.data.children.map(post => (
                         <li key={post.data.id}>
@@ -21,7 +29,7 @@ export default function CustomFetch() {
                     
                 </ul>
             )}
-            {messageError && <div>{messageError}</div>}
+            {isError && <div>{error.message}</div>}
         </div>
     )
 }
