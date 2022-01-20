@@ -10,7 +10,7 @@ export default class AppClass extends Component {
             todos: [
                 {
                   id: 1,
-                  title: 'Finish React Series',
+                  title: 'Finish React Serie Serie Serie Serie Serie',
                   isComplete: false,
                 },
                 {
