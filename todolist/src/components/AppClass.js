@@ -15,7 +15,7 @@ export default class AppClass extends Component {
                 },
                 {
                   id: 2,
-                  title: 'Go to Grocery Go to Grocery',
+                  title: 'Go to Grocery',
                   isComplete: true,
                 },
                 {
